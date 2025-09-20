@@ -4,11 +4,8 @@ from main import phishingtextagent
 from agno.agent import Agent, RunResponse
 IMAP_SERVER = "imap.gmail.com"
 EMAIL_ACCOUNT = "ujaanwashere@gmail.com"
-PASSWORD = "ok"
+PASSWORD = ""
 NUM=1
-
-
-st.title("RakshaAGI")
 def fetch_inbox_text_emails():
     with MailBox(IMAP_SERVER).login(EMAIL_ACCOUNT, PASSWORD, initial_folder="INBOX") as mailbox:
         for msg in mailbox.fetch(criteria=AND(all=True), mark_seen=False):
@@ -20,15 +17,35 @@ def fetch_inbox_text_emails():
                 print("Body:\n", msg.text.strip())
             else:
                 print("No plain text body found.")
+def check_phis():
+    with MailBox(IMAP_SERVER).login(EMAIL_ACCOUNT, PASSWORD, initial_folder="INBOX") as mailbox:
+        for msg in mailbox.fetch(limit=NUM, reverse=True):
+                #print("=" * 50)
+                mail=("From:", msg.from_)+("Subject:", msg.subject)+("Date:", msg.date)
+                if msg.text:
+                    mail+=("Body:\n", msg.text.strip())
+                else:
+                    print("No plain text body found.")
+                mail=str(mail)
+                response: RunResponse = phishingtextagent.run(mail)
+                print(response.content)
 
-with MailBox(IMAP_SERVER).login(EMAIL_ACCOUNT, PASSWORD, initial_folder="INBOX") as mailbox:
-    for msg in mailbox.fetch(limit=NUM, reverse=True):
-            #print("=" * 50)
-            mail=("From:", msg.from_)+("Subject:", msg.subject)+("Date:", msg.date)
-            if msg.text:
-                mail+=("Body:\n", msg.text.strip())
-            else:
-                print("No plain text body found.")
-            mail=str(mail)
-            response: RunResponse = phishingtextagent.run(mail)
-            print(response.content)
+IMAP_SERVER = st.text_input("IMAP Server", value="imap.gmail.com")
+EMAIL_ACCOUNT = st.text_input("Email Address")
+PASSWORD = st.text_input("App Password", type="password")
+NUM = st.number_input("Number of emails to check", min_value=1, max_value=10, value=1)
+if st.button("Check Email"):
+    try:
+        with MailBox(IMAP_SERVER).login(EMAIL_ACCOUNT, PASSWORD, initial_folder="INBOX") as mailbox:
+            for msg in mailbox.fetch(limit=NUM, reverse=True):
+                st.write("**From:**", msg.from_)
+                st.write("**Subject:**", msg.subject)
+                st.write("**Date:**", msg.date)
+                body = msg.text.strip() if msg.text else "No plain text body found."
+                st.write("**Body:**", body)
+                mail = f"From: {msg.from_}\nSubject: {msg.subject}\nDate: {msg.date}\nBody:\n{body}"
+                response: RunResponse = phishingtextagent.run(mail)
+                st.write("**Evaluation**")
+                st.write(response.content)
+    except Exception as e:
+        st.error(f"error: {e}")
