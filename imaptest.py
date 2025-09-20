@@ -1,6 +1,6 @@
 import streamlit as st
 from imap_tools import MailBox, AND
-from main import phishingtextagent
+from wpmain import phishingtextagent
 from agno.agent import Agent, RunResponse
 IMAP_SERVER = "imap.gmail.com"
 EMAIL_ACCOUNT = "ujaanwashere@gmail.com"
@@ -29,7 +29,7 @@ def check_phis():
                 mail=str(mail)
                 response: RunResponse = phishingtextagent.run(mail)
                 print(response.content)
-
+st.title("RakshaAI")
 IMAP_SERVER = st.text_input("IMAP Server", value="imap.gmail.com")
 EMAIL_ACCOUNT = st.text_input("Email Address")
 PASSWORD = st.text_input("App Password", type="password")

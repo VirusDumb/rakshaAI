@@ -43,6 +43,6 @@ webhtmlagent=Agent(agent_id="WSA",
 
 fstapp=FastAPIApp(agents=[phishingtextagent])
 wpapp=WhatsappAPI(agent=phishingtextagent)
-app=fstapp.get_app()
+app=wpapp.get_app()
 if __name__ == "__main__":
-    fstapp.serve(app="main:app", port=8001, reload=True)
+    wpapp.serve(app="wpmain:app", port=8001, reload=True)
