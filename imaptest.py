@@ -1,11 +1,14 @@
+import streamlit as st
 from imap_tools import MailBox, AND
 from main import phishingtextagent
 from agno.agent import Agent, RunResponse
 IMAP_SERVER = "imap.gmail.com"
 EMAIL_ACCOUNT = "ujaanwashere@gmail.com"
-PASSWORD = "suuz lemw xxpp bkun"
+PASSWORD = "ok"
+NUM=1
 
 
+st.title("RakshaAGI")
 def fetch_inbox_text_emails():
     with MailBox(IMAP_SERVER).login(EMAIL_ACCOUNT, PASSWORD, initial_folder="INBOX") as mailbox:
         for msg in mailbox.fetch(criteria=AND(all=True), mark_seen=False):
@@ -19,7 +22,7 @@ def fetch_inbox_text_emails():
                 print("No plain text body found.")
 
 with MailBox(IMAP_SERVER).login(EMAIL_ACCOUNT, PASSWORD, initial_folder="INBOX") as mailbox:
-    for msg in mailbox.fetch(limit=1, reverse=True):
+    for msg in mailbox.fetch(limit=NUM, reverse=True):
             #print("=" * 50)
             mail=("From:", msg.from_)+("Subject:", msg.subject)+("Date:", msg.date)
             if msg.text:
@@ -28,4 +31,4 @@ with MailBox(IMAP_SERVER).login(EMAIL_ACCOUNT, PASSWORD, initial_folder="INBOX")
                 print("No plain text body found.")
             mail=str(mail)
             response: RunResponse = phishingtextagent.run(mail)
-print(response.content)
+            print(response.content)
