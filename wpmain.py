@@ -75,7 +75,7 @@ webhtmlagent=Agent(agent_id="WSA",
 
 phishingtextagent.print_response("URGENT: YOUR ACCOUNT HAS BEEN SUSPENDED DUE TO SUSPICIOUS ACTVITY, CLICK LINK TO KNOW MORE https://sbibank.xyz")
 
-fstapp=FastAPIApp(agents=[phishingtextagent])
+#fstapp=FastAPIApp(agents=[phishingtextagent])
 wpapp=WhatsappAPI(agent=phishingtextagent)
 app=wpapp.get_app()
 if __name__ == "__main__":
