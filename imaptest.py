@@ -38,13 +38,15 @@ if st.button("Check Email"):
     try:
         with MailBox(IMAP_SERVER).login(EMAIL_ACCOUNT, PASSWORD, initial_folder="INBOX") as mailbox:
             for msg in mailbox.fetch(limit=NUM, reverse=True):
+                st.title("Next")
                 st.write("**From:**", msg.from_)
                 st.write("**Subject:**", msg.subject)
                 st.write("**Date:**", msg.date)
                 body = msg.text.strip() if msg.text else "No plain text body found."
                 st.write("**Body:**", body)
-                mail = f"From: {msg.from_}\nSubject: {msg.subject}\nDate: {msg.date}\nBody:\n{body}"
-                response: RunResponse = phishingtextagent.run(mail)
+                with st.spinner():
+                    mail = f"From: {msg.from_}\nSubject: {msg.subject}\nDate: {msg.date}\nBody:\n{body}"
+                    response: RunResponse = phishingtextagent.run(mail)
                 st.write("**Evaluation**")
                 st.write(response.content)
     except Exception as e:
