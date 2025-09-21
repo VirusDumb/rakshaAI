@@ -16,8 +16,7 @@ from typing import Any, Callable, Dict
 #from os import getenv
 from agno.team import Team
 from agno.tools import tool
-colablink='https://nonprojecting-tamar-hysterically.ngrok-free.app/analyze'
-#ollhost='https://64e24cff7d4e.ngrok-free.app/'
+MLmodellink='https://radvirtua-phishing-detector.hf.space/analyze'
 import requests
 import requests
 import json
@@ -34,7 +33,7 @@ def evaluatormodel(mail:str)->str:
         str: JSON string of Classification
     """
     
-    api=colablink
+    api=MLmodellink
     payload = {
         "text": mail
     }

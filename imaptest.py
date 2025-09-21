@@ -2,8 +2,7 @@ import streamlit as st
 from imap_tools import MailBox, AND
 from wpmain import phishingtextagent
 from agno.agent import Agent, RunResponse
-IMAP_SERVER = "imap.gmail.com"
-EMAIL_ACCOUNT = "ujaanwashere@gmail.com"
+IMAP_SERVER = ""
 PASSWORD = ""
 NUM=1
 def fetch_inbox_text_emails():
@@ -29,7 +28,14 @@ def check_phis():
                 mail=str(mail)
                 response: RunResponse = phishingtextagent.run(mail)
                 print(response.content)
-st.title("RakshaAI")
+st.title("PhishKatcher AI🎣🚫")
+st.write("We use IMAP to Access your Mailbox and Check your latest mails for phishing and scamming attempts ")
+st.write("""
+            - Uses Our own ML Model to detect probability of it being a Phishing attack
+            - Uses GPT OSS to scan the email further, uses search tools to check the legitimacy of the info in the AI and scrapes attached links to confirm it's not a scam
+            - **Do not use with a mail that recieves OTPs or contains other critical information** for obvious privacy concerns in this demo, work in progress to make it safer for those use cases, will use local LLMs on the user's device
+            - To use enable IMAP in your email account, generate an App Password if your email service requires, enter link of the IMAP server, click Check Email to start scanning
+        """)
 IMAP_SERVER = st.text_input("IMAP Server", value="imap.gmail.com")
 EMAIL_ACCOUNT = st.text_input("Email Address")
 PASSWORD = st.text_input("App Password", type="password")
